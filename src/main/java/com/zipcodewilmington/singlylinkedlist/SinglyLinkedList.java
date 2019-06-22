@@ -7,144 +7,99 @@ import java.util.ArrayList;
  */
 public class SinglyLinkedList <T>{
 
-    private static class Node<T>{
+    private class Node{
         private T element;
-        private Node<T> next;  //pointer
+        private Node nextNode;  //pointer
 
         //constructor
-        public Node(T element, Node<T> next){
-            element = element;
-            next = next;
+        public Node(T element){
+            this.element = element;
+            this.nextNode = null;
         }
 
         public T getElement(){
             return element;
         }
 
-        public Node<T> getNext(){
-            return next;
+        public void setElement(T element){
+            this.element = element;
         }
 
-        public void setNext(Node<T> next){
-            next = next;
+        public Node getNextNode(){
+            return nextNode;
+        }
+
+        public void setNextNode(Node nextNode){
+            this.nextNode = nextNode;
         }
     }
 
     //List Implementation
-    private Node<T> head = null;
-    private Node<T> tail = null;
-    private int size = 0;
+    Node head;
 
-    public SinglyLinkedList(){};
+    public SinglyLinkedList() { }
+
+    public SinglyLinkedList(T element) {
+        this.head = new Node(element);
+    }
+
+    public void add(T element) {
+        Node currentNode = head;
+        while(currentNode.getNextNode() != null) {
+            currentNode = currentNode.getNextNode();
+        }
+        Node newNode = new Node(element);
+        currentNode.setNextNode(newNode);
+    }
+
+    public Object get(int index) {
+        Node currentNode = getNodeAtIndex(index);
+        return currentNode.getElement();
+    }
 
     public int size() {
-        return size;
+        Node currentNode = head;
+        int currentSize = 0;
+        do {currentNode = currentNode.getNextNode();
+            currentSize++;
+        } while(currentNode.getNextNode() != null);
+        return currentSize;
     }
 
-    public boolean isEmpty(){
-        return size == 0;
+    public void remove(int index) {
+        Node currentNode = getNodeAtIndex(index);;
+        currentNode.setElement(null);
     }
 
-    public T first(){
-        if(isEmpty()){
-            return null;
+    private Node getNodeAtIndex(int index) {
+        Node currentNode = head;
+        int currentIndex = 0;
+        while (currentIndex < index) {
+            currentNode = currentNode.getNextNode();
+            currentIndex ++;
         }
-        return head.getElement();
+        return currentNode;
     }
 
-    public T last(){
-        if(isEmpty()){
-            return null;
+    public boolean contains(T element) {
+        if(findElement(element) != -1) {
+            return true;
         }
-        return tail.getElement();
+        return false;
     }
 
-
-    public void addFirst(T element){
-            head = new Node<T>(element, head);  //this becomes the new head
-        if(size == 0){
-            tail = head;
-        }
-        size++;
-        System.out.println("Added head node with" + head.getElement() + " element.");
-    }
-
-    public void addLast(T element){
-        Node<T> newNode = new Node<T>(element, null);
-        if(isEmpty()) {
-            head = newNode;
-        } else{
-            tail.setNext(newNode);
-        }
-        tail = newNode;
-        size++;
-        System.out.println("Added tail node with " + tail.getElement() + " element.");
-    }
-
-    public T removeFirst(){
-        if (isEmpty()){
-            return null;
-        }
-        T result = head.getElement();
-        head = head.getNext();
-        size--;
-        if(size == 0){
-            tail = null;
-        }
-        System.out.println("Removed head node with " + result + " element.");
-        return result;
-    }
-
-    public void reverseList(){
-        if(size <=1){
-
-        }else if(size == 2){
-            tail.setNext(head);
-            head = tail;
-            tail = head.getNext();
-            tail.setNext(null);
-        }else {
-            Node<T> current = head;
-            Node<T> currentNext = head.getNext();
-            Node<T> currentNextNext = currentNext.getNext();
-            tail = head;
-            while(currentNext != null) {
-                currentNext.setNext(current);
-                current = currentNext;
-                currentNext = currentNextNext;
-                if (currentNextNext != null) {
-                    currentNextNext = currentNextNext.getNext();
-                }
+    public int findElement(T element) {
+        Node currentNode = head;
+        int currentIndex = 0;
+        do {
+            if(currentNode.getElement() == element) {
+                return currentIndex;
+            } else {
+                currentNode = currentNode.getNextNode();
+                currentIndex++;
             }
-            tail.setNext(null);
-            head = current;
-        }
-    }
-
-    public T removeElement(T element) {
-        Node<T> current = head;
-        Node<T> previous = head;
-        int position = 0;
-        while(current != null && current.getElement()!= element) {
-            previous = current;
-            current = current.getNext();
-            position++;
-        }
-        if(current == null){
-            return null;
-        }else {
-            if(head == current){
-                head = current.getNext();
-            } else if (tail == current){
-                tail = previous;
-                tail.setNext(null);
-            }else {
-                previous.setNext(current.getNext());
-            }
-            System.out.println("Found and removed node at position " + position);
-            size--;
-            return current.getElement();
-        }
+        } while(currentNode != null);
+        return -1;
     }
 
 

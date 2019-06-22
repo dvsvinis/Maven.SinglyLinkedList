@@ -1,8 +1,7 @@
 package com.zipcodewilmington.singlylinkedlist;
 
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,60 +11,84 @@ import java.util.List;
 public class SinglyLinkedListTest {
 
     @Test
+    public void constructorTest() {
+        //Given
+        String element = "element 1";
+        //When
+        SinglyLinkedList myList = new SinglyLinkedList(element);
+        //Then
+        assertTrue(myList instanceof SinglyLinkedList);
+        assertNotNull(myList.head);
+    }
+
+
+    @Test
     public void addTest() {
-        // given
-        SinglyLinkedList<String> MyList = new SinglyLinkedList<String>();
-
-        // when
-        MyList.addFirst("element 1");
-        MyList.addFirst("element 2");
-        MyList.addFirst("element 3");
-
-        boolean expected = false;
-
-  //      assertEquals(MyList.isEmpty());
+        //Given
+        String element = "element 1";
+        SinglyLinkedList myList = new SinglyLinkedList(element);
+        //When
+        myList.add(element);
+        //Then
+        assertEquals(1, myList.size());
     }
 
     @Test
-    public void removeTest() {
-        // given
-        SinglyLinkedList<String> MyList = new SinglyLinkedList<String>();
+    public void sizeTest() {
+        //Given
+        String element = "element 1";
+        SinglyLinkedList myList = new SinglyLinkedList(element);
+        //When
+        myList.add(element);
+        //Then
+        assertEquals(1, myList.size());
+    }
 
-        // when
-        MyList.addFirst("element 1");
-        MyList.addFirst("element 2");
-        MyList.addFirst("element 3");
-        MyList.addLast("element 4");
-        MyList.addLast("element 5");
-        MyList.addLast("element 6");
-        while (!MyList.isEmpty()) {
-            MyList.removeFirst();
-        }
+
+    @Test
+    public void containsTest1() {
+        //Given
+        String element1 = "element1";
+        String element2 = "element2";
+        SinglyLinkedList myList = new SinglyLinkedList(element1);
+        myList.add(element1);
+        myList.add(element2);
+        //When
+        boolean containsTest = myList.contains(element2);
+        //Then
+        assertTrue(containsTest);
     }
 
     @Test
-    public void reverseTest() {
-        // given
-        SinglyLinkedList<String> MyList = new SinglyLinkedList<String>();
-
-        // when
-        MyList.addFirst("element 1");
-        MyList.addFirst("element 2");
-        MyList.addFirst("element 3");
-        MyList.addFirst("element 4");
-        MyList.reverseList();
+    public void containsTest2() {
+        //Given
+        String element1 = "element1";
+        String element2 = "element2";
+        String element3 = "element3";
+        SinglyLinkedList myList = new SinglyLinkedList(element1);
+        myList.add(element3);
+        //When
+        boolean containsTest = myList.contains(element2);
+        //Then
+        assertFalse(containsTest);
     }
 
     @Test
-    public void removeElementTest() {
-        // given
-        SinglyLinkedList<String> MyList = new SinglyLinkedList<String>();
-
-        // when
-        MyList.addFirst("element 1");
-        MyList.addFirst("element 2");
-        MyList.addFirst("element 3");
-        MyList.addFirst("element 4");
-        MyList.removeElement("element 4");
+    public void getTest() {
+        //Given
+        String element1 = "element1";
+        String element2 = "element2";
+        String element3 = "element3";
+        SinglyLinkedList myList = new SinglyLinkedList(element1);
+        myList.add(element1);
+        myList.add(element2);
+        myList.add(element3);
+        //When
+        Object result = myList.get(2);
+        System.out.println(result);
+        //Then
+        assertEquals(element2, result);
     }
+
+
 }
